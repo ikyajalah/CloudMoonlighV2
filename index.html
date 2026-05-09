@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudMoonlight V10 - Cloud Gaming Premium Indonesia</title>
+    
+    <!-- PWA & Favicon -->
+    <link rel="manifest" href="data:application/manifest+json,{
+        \"name\":\"CloudMoonlight V10\",\"short_name\":\"MoonV10\",\"theme_color\":\"#00ff88\",\"background_color\":\"#0a0a1a\",\"display\":\"standalone\",\"icons\":[{\"src\":\"data:image/svg+xml,...\",\"sizes\":\"192x192\"}] 
+    }">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='radial-gradient(circle, #00ff88 0%, #667eea 70%, #00345a 100%)' stroke='%23fff' stroke-width='3'/></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        /* V10 Critical CSS - Inline untuk speed */
+        :root{--primary:#00ff88;--secondary:#667eea;--dark:#0a0a1a;--accent:#764ba2;--glow:rgba(0,255,136,0.4)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#0a0a1a;color:#fff;overflow-x:hidden}
+        .container{max-width:1400px;margin:0 auto;padding:0 20px}
+        /* Navbar V10 */
+        .navbar{background:rgba(10,10,26,.98);backdrop-filter:blur(30px);position:fixed;top:0;width:100%;z-index:9999;padding:1rem 0;border-bottom:1px solid var(--glow)}
+        .nav-container{display:flex;justify-content:space-between;align-items:center;max-width:1400px;margin:0 auto;padding:0 20px}
+        .logo-v10{display:flex;align-items:center;font-weight:800;font-size:1.8rem;background:linear-gradient(135deg,var(--primary),var(--secondary),#fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .logo-moon{width:50px;height:50px;margin-right:15px;display:flex;align-items:center;justify-content:center}
+        .moon-v10{width:100%;height:100%;animation:glowV10 2s ease-in-out infinite alternate}
+        @keyframes glowV10{0%{filter:drop-shadow(0 0 10px var(--glow));transform:scale(1)}100%{filter:drop-shadow(0 0 25px var(--secondary)) drop-shadow(0 0 35px var(--primary));transform:scale(1.1)}}
+        .nav-menu{display:flex;gap:2.5rem;align-items:center}
+        .nav-link{color:#fff;text-decoration:none;font-weight:500;transition:all .3s;font-size:1rem}
+        .nav-link:hover{color:var(--primary);transform:translateY(-2px)}
+        .btn-login{background:linear-gradient(45deg,var(--primary),var(--secondary));padding:12px 28px;border-radius:50px;font-weight:600;transition:all .3s}
+        .btn-login:hover{transform:translateY(-3px);box-shadow:0 15px 40px var(--glow)}
+        .hamburger{display:none;flex-direction:column;cursor:pointer}
+        .hamburger span{width:28px;height:3px;background:#fff;margin:3px 0;transition:.3s}
+        /* Hero V10 */
+        .hero{min-height:100vh;display:flex;align-items:center;padding:140px 20px 60px;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#16213e 100%);position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(circle at 20% 80%,rgba(0,255,136,.2) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(102,126,234,.2) 0%,transparent 50%);animation:shiftV10 20s linear infinite;z-index:-1}
+        @keyframes shiftV10{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,-50px)}}
+        .hero-content{flex:1;max-width:700px}
+        .hero-content h1{font-size:clamp(3rem,6vw,5.5rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;background:linear-gradient(135deg,var(--primary),var(--secondary),#fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;position:relative}
+        .hero-content h1::after{content:'🌙';position:absolute;font-size:3rem;top:-20px;right:-100px;animation:floatV10 4s ease-in-out infinite}
+        @keyframes floatV10{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-15px) rotate(15deg)}}
+        .hero-content p{font-size:1.3rem;margin-bottom:2.5rem;opacity:.95;max-width:600px}
+        .hero-buttons{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center}
+        .btn-v10{padding:18px 36px;border:none;border-radius:50px;font-size:1.2rem;font-weight:700;cursor:pointer;transition:all .4s;display:flex;align-items:center;gap:12px;text-transform:uppercase;letter-spacing:1px;position:relative;overflow:hidden}
+        .btn-primary{background:linear-gradient(45deg,var(--primary),var(--secondary));color:#000;box-shadow:0 15px 40px var(--glow)}
+        .btn-primary:hover{transform:translateY(-5px) scale(1.05);box-shadow:0 25px 60px rgba(0,255,136,.6)}
+        .btn-secondary{background:transparent;color:#fff;border:3px solid var(--primary);font-weight:700}
+        .btn-secondary:hover{background:var(--primary);color:#000;transform:translateY(-5px)}
+        .hero-image{flex:1;position:relative;text-align:center}
+        .floating-card{position:absolute;top:15%;right:5%;background:rgba(255,255,255,.1);backdrop-filter:blur(20px);padding:1.5rem 2rem;border-radius:25px;border:1px solid rgba(255,255,255,.3);animation:floatCard 6s ease-in-out infinite;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+        .floating-card i{font-size:3rem;color:var(--primary);margin-bottom:10px;display:block}
+        .floating-card span{font-weight:700;font-size:1.2rem}
+        @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+        /* Pricing V10 */
+        .pricing{padding:120px 0;background:linear-gradient(135deg,#0f0f2a 0%,#1a1a3e 100%)}
+        .section-title{text-align:center;font-size:3.5rem;font-weight:800;margin-bottom:5rem;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:2.5rem}
+        .pricing-card{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border-radius:30px;padding:4rem 3rem;text-align:center;border:1px solid rgba(255,255,255,.1);transition:all .5s;position:relative;overflow:hidden}
+        .pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--primary),var(--secondary))}
+        .pricing-card:hover{transform:translateY(-20px) scale(1.02);border-color:var(--primary);box-shadow:0 40px 100px rgba(0,255,136,.3)}
+        .card-header{position:relative;margin-bottom:2.5rem}
+        .card-header h3{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:1rem}
+        .badge{position:absolute;top:-20px;right:-20px;background:linear-gradient(45deg,var(--primary),var(--secondary));color:#000;padding:12px 20px;border-radius:30px;font-weight:800;font-size:1rem;box-shadow:0 10px 30px var(--glow)}
+        .price{font-size:4rem;font-weight:900;color:var(--primary);margin:1.5rem 0 3rem}
+        .price span{font-size:1.2rem;color:#aaa;font-weight:400}
+        .features{list-style:none;margin-bottom:3rem}
+        .features li{padding:1rem 0;color:#ccc;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+        .features i{color:var(--primary);margin-right:15px;width:25px;font-size:1.3rem}
+        .features .fa-times{color:#ff6b6b}
+        /* Modal V10 */
+        .modal{display:none;position:fixed;z-index:10000;left:0;top:0;width:100%;height:100%;background:rgba(10,10,26,.95);backdrop-filter:blur(20px);animation:fadeV10 .4s}
+        @keyframes fadeV10{from{opacity:0}to{opacity:1}}
+        .modal-content{background:rgba(255,255,255,.1);backdrop-filter:blur(30px);margin:5% auto;padding:4rem;border-radius:30px;width:90%;max-width:600px;border:1px solid rgba(255,255,255,.2);position:relative;transform:translateY(30px);animation:slideV10 .5s forwards}
+        @keyframes slideV10{to{transform:translateY(0)}}
+        .close{position:absolute;right:30px;top:25px;font-size:3rem;cursor:pointer;color:#fff;transition:.3s}
+        .close:hover{transform:rotate(90deg) scale(1.2);color:var(--primary)}
+        .modal-content h2{margin-bottom:2.5rem;color:#fff;font-size:2.2rem;text-align:center}
+        .modal-content input{width:100%;padding:20px;border:2px solid rgba(255,255,255,.2);border-radius:20px;font-size:1.1rem;background:rgba(255,255,255,.1);color:#fff;transition:all .3s;margin-bottom:1.5rem}
+        .modal-content input::placeholder{color:#aaa}
+        .modal-content input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:rgba(255,255,255,.15)}
+        /* Success Modal V10 */
+        .success{text-align:center}
+        .success i{font-size:6rem;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:2rem;display:block}
+        .cloud-info{background:rgba(255,255,255,.1);padding:2.5rem;border-radius:25px;margin:2.5rem 0;border:1px solid rgba(255,255,255,.2)}
+        .cloud-row{display:flex;align-items:center;gap:15px;margin-bottom:1.5rem;padding:1.5rem;background:rgba(255,255,255,.05);border-radius:20px;border-left:5px solid var(--primary)}
+        .cloud-row strong{min-width:90px;color:var(--primary);font-weight:700}
+        .copyable{background:#1a1a2a;padding:12px 18px;border-radius:15px;font-family:monospace;cursor:pointer;flex:1;transition:.3s}
+        .copyable:hover{background:var(--primary);color:#000}
+        .fa-copy{color:#aaa;cursor:pointer;transition:.3s;margin-left:10px}
+        .fa-copy:hover{color:var(--primary);transform:scale(1.3)}
+        /* Responsive V10 */
+        @media(max-width:768px){.hamburger{display:flex}.nav-menu{position:fixed;left:-100%;top:90px;flex-direction:column;background:rgba(10,10,26,.99);width:100%;padding:2rem;border-radius:0 0 30px 30px;transition:.4s}.nav-menu.active{left:0}.hero{flex-direction:column;text-align:center;padding-top:160px}.hero-buttons{justify-content:center;flex-direction:column}.pricing-grid{grid-template-columns:1fr}.pricing{padding:80px 0}}
+        @media(max-width:480px){.hero-content h1{font-size:2.5rem}.section-title{font-size:2.5rem}}
+    </style>
+</head>
+<body>
+    <!-- Navbar V10 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-v10">
+                <div class="logo-moon">
+                    <svg viewBox="0 0 60 60" class="moon-v10">
+                        <defs><radialGradient id="v10glow" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#00ff88"/><stop offset="50%" stop-color="#667eea"/><stop offset="100%" stop-color="#00345a"/></radialGradient></defs>
+                        <circle cx="30" cy="30" r="27" fill="url(#v10glow)" stroke="#fff" stroke-width="2"/>
+                        <path d="M17 17 Q29 11 41 17 Q35 27 29 23 T17 17" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                        <circle cx="23" cy="17" r="2.2" fill="#fff"/>
+                        <circle cx="37" cy="19" r="2" fill="#fff"/>
+                    </svg>
+                </div>
+                <span>Cloud<span>Moonlight</span> V10</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">🏠 Home</a>
+                <a href="#pricing" class="nav-link">💰 Harga</a>
+                <a href="#contact" class="nav-link">📞 Contact</a>
+                <a href="#login" class="nav-link btn-login" id="loginBtn">👤 Login</a>
+                <div class="wa-admin">
+                    <a href="https://wa.me/6283873023655" class="btn-wa" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Admin WA
+                    </a>
+                </div>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <!-- Hero V10 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Cloud Gaming <strong>V10</strong> Tercepat Indonesia 🌙</h1>
+            <p>RTX 40 Series • 144FPS • Zero Lag • Anti DC • Support 100+ Game AAA. Mulai dari <strong>GRATIS</strong>!</p>
+            <div class="hero-buttons">
+                <button class="btn-v10 btn-primary" onclick="buyPackage('trial')">
+                    <i class="fas fa-rocket"></i> TRIAL GRATIS 2 JAM
+                </button>
+                <button class="btn-v10 btn-secondary" onclick="openModal('pricing-modal')">
+                    <i class="fas fa-crown"></i> PREMIUM V10
+                </button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card">
+                <i class="fas fa-fire"></i>
+                <div>RTX 4090</div>
+                <div class="spec">32GB VRAM</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing V10 -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">💎 Paket V10 Premium</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card popular">
+                    <div class="card-header">
+                        <h3>🔥 TRIAL V10</h3>
+                        <div class="badge">MOST POPULAR</div>
+                    </div>
+                    <div class="price">GRATIS <span>2 Jam</span></div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> RTX 4070 Ti</li>
+                        <li><i class="fas fa-check"></i> 24GB RAM DDR5</li>
+                        <li><i class="fas fa-check"></i> 1440p 120FPS</li>
+                        <li><i class="fas fa-check"></i> Anti DC 99.9%</li>
+                        <li><i class="fas fa-times"></i> 1x Extend</li>
+                    </ul>
+                    <button class="btn-v10 btn-primary" onclick="buyPackage('trial')">🚀 START TRIAL</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="card-header"><h3>⚡ DAILY</h3></div>
+                    <div class="price">Rp 15.000 <span>24 Jam</span></div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> RTX 4080</li>
+                        <li><i class="fas fa-check"></i> 32GB RAM</li>
+                        <li><i class="fas fa-check"></i> 4K 60FPS</li>
+                        <li><i class="fas fa-check"></i> Unlimited Extend</li>
+                    </ul>
+                    <button class="btn-v10 btn-primary" onclick="buyPackage('daily')">BUY DAILY</button>
+                </div>
+                <div class="pricing-card pro">
+                    <div class="card-header"><h3>👑 ULTIMATE</h3></div>
+                    <div class="price">Rp 99.000 <span>30 Hari</span></div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> RTX 4090</li>
+                        <li><i class="fas fa-check"></i> 64GB RAM DDR5</li>
+                        <li><i class="fas fa-check"></i> 4K 144FPS</li>
+                        <li><i class="fas fa-check"></i> Priority Server</li>
+                        <li><i class="fas fa-check"></i> 24/7 Support WA</li>
+                    </ul>
+                    <button class="btn-v10 btn-primary" onclick="buyPackage('ultimate')">👑 ULTIMATE</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Admin -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">📞 Contact Admin</h2>
+            <div class="contact-card">
+                <div class="contact-info">
+                    <h3>Admin Premium V10</h3>
+                    <p>083873023655</p>
+                    <div class="contact-buttons">
+                        <a href="https://wa.me/6283873023655?text=Saya%20mau%20order%20CloudMoonlight%20V10%20%F0%9F%8C%89" class="btn-wa-large" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Chat WA Admin
+                        </a>
+                        <a href="https://wa.me/6283873023655" class="btn-call" target="_blank">
+                            <i class="fas fa-phone"></i> Call 083873023655
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal V10 -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('login-modal')">&times;</span>
+            <h2>👤 Login CloudMoonlight V10</h2>
+            <form id="loginForm">
+                <input type="text" id="phone" placeholder="No.Whatsapp (08xxxxxxxxx)" required maxlength="13">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email (Opsional)">
+                <button type="submit" class="btn-v10 btn-primary full-width">🌙 VERIVIKASI & LOGIN</button>
+                <div class="login-help">
+                    <p>Kirim nomor WA ke <strong>083873023655</strong> untuk akses premium</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal V10 -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content success">
+            <i class="fas fa-rocket"></i>
+            <h2>🎉 V10 Activated!</h2>
+            <p id="successMessage">CloudMoonlight V10 siap digunakan!</p>
+            <div id="cloudAccess">
+                <h3>🔥 Server Premium Ready</h3>
+                <div class="cloud-info">
+                    <div class="cloud-row">
+                        <strong>🌐 Server:</strong> 
+                        <code id="cloudUrl"></code>
+                        <button class="btn-copy" onclick="copyToClipboard('cloudUrl')">Copy</button>
+                    </div>
+                    <div class="cloud-row">
+                        <strong>👤 ID:</strong> 
+                        <code id="cloudUser"></code>
+                        <button class="btn-copy" onclick="copyToClipboard('cloudUser')">Copy</button>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="#" class="btn-v10 btn-primary" onclick="openCloud()">🚀 Connect Now</a>
+                    <a href="https://wa.me/6283873023655" class="btn-v10 btn-secondary" target="_blank">📞 Support WA</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init();</script>
+    <script src="script-v10.js"></script>
+</body>
+</html>
